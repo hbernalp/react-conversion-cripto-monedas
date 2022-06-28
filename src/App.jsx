@@ -23,6 +23,7 @@ function App() {
       //Llamando la Api para consultar la moneda a cotizar desde los datos que se ponen en el teclado
       const cotizarCripto = async () => {
         setCargando(true)
+        setResultado({})
 
         const { moneda, criptomoneda } = monedas
         const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${criptomoneda}&tsyms=${moneda}`

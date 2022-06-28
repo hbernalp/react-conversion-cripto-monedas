@@ -4,7 +4,7 @@ const Result = styled.div`
     color:#fff;
     font-family: 'Lato', sans-serif;
     display:flex;
-    align-items: start;
+    align-items: center;
 `
 
 const Texto = styled.p`
