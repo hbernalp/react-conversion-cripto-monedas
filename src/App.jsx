@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import Formulario from './components/Formulario'
 import Resultado from './components/Resultado'
+import Spinner from './components/Spinner'
 import CriptoImagen from './img/imagen-criptos.png'
 
 
@@ -14,10 +15,15 @@ function App() {
   //Creamos objeto para los resultados de la consulta de la api
   const [resultado, setResultado] = useState({})
 
+  //Creando el Spinner barra de cargando en el proyecto
+  const [cargando, setCargando] = useState(false) // inicia en false para que no aparezca cargando desde que inicia la aplicación
+
   useEffect(() => {
     if(Object.keys(monedas).length > 0){
       //Llamando la Api para consultar la moneda a cotizar desde los datos que se ponen en el teclado
       const cotizarCripto = async () => {
+        setCargando(true)
+
         const { moneda, criptomoneda } = monedas
         const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${criptomoneda}&tsyms=${moneda}`
         
@@ -27,6 +33,8 @@ function App() {
         //Cuando los datos de busqueda de la api son dinamicos, las variables que tenemos definidas se colocan en la llamada de la consulta de la API
         //console.log(resultado.DISPLAY[criptomoneda][moneda]) //De esta forma busca por la variacion de los campos de la variable
         setResultado(resultado.DISPLAY[criptomoneda][moneda])
+
+        setCargando(false)
 
       }
       cotizarCripto();
@@ -86,6 +94,9 @@ function App() {
           setMonedas={setMonedas}
         />
         
+        {/* mostrando el mensaje de Cargando */}
+        {cargando && <Spinner />}
+
         {/* mostrando los resultados cuando se ha dado click en el boton de cotizar */}
         {resultado.PRICE && <Resultado resultado={resultado} />}
 
