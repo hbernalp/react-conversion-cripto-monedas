@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
+import Error from './Error'
 import useSelectMonedas from '../hooks/useSelectMonedas'
 import { monedas } from '../data/monedas'
+
 
  //Creando el StyledComponent del boton
  const InputSubmit = styled.input`
@@ -29,6 +31,9 @@ const Formulario = () => {
 
     //Llamando el State 
     const [criptos, setCriptos] = useState([]) //El useState escucha el stado de la informacion de la api en el setcriptos
+
+    //Validadndo el State  para el error , revisa que los campos del formulario tengan datos
+    const [error, setError] = useState(false)
 
    // llamando el Hook perdonalizado, pero NO del global sino del return que se necesita dede la funcion del Hook
     const [ moneda, SelectMonedas ] = useSelectMonedas('Elige el tipo de moneda a calcular', monedas)
@@ -58,14 +63,32 @@ const Formulario = () => {
 
     }, [])
 
-  return (
-    <form>
+    //Validando los campos del formulario
+    const handleSubmit = e => {
+        e.preventDefault()
 
-        <SelectMonedas />
-        <SelectCriptomoneda />
-        
-        <InputSubmit type="submit" value="Cotizar" />
-    </form>
+        if([moneda, criptomoneda].includes('')){
+            setError(true)
+            return
+        }
+        setError(false)
+    }
+
+  return (
+    <>
+        {error && <Error>Todos los campos son obligatorios</Error>}
+        <form
+            // validando los campos del formulario
+            onSubmit = {handleSubmit}
+        >
+
+            <SelectMonedas />
+            <SelectCriptomoneda />
+            
+            <InputSubmit type="submit" value="Cotizar" />
+        </form>
+    
+    </>
   )
 }
 
