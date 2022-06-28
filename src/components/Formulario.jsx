@@ -27,7 +27,7 @@ import { monedas } from '../data/monedas'
     }
 `
 
-const Formulario = () => {
+const Formulario = ({setMonedas}) => {
 
     //Llamando el State 
     const [criptos, setCriptos] = useState([]) //El useState escucha el stado de la informacion de la api en el setcriptos
@@ -66,12 +66,15 @@ const Formulario = () => {
     //Validando los campos del formulario
     const handleSubmit = e => {
         e.preventDefault()
-
         if([moneda, criptomoneda].includes('')){
             setError(true)
             return
         }
         setError(false)
+        setMonedas({
+            moneda,
+            criptomoneda
+        })
     }
 
   return (

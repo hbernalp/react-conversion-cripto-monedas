@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import Formulario from './components/Formulario'
 import CriptoImagen from './img/imagen-criptos.png'
@@ -6,6 +6,31 @@ import CriptoImagen from './img/imagen-criptos.png'
 
 
 function App() {
+
+  //Validando que tipos de monedas selecciona el usuario, utilizando el state
+  const [monedas, setMonedas] = useState({}) //El use state se define como un objeto ya que va a recibir diferente informacion del formulario
+
+  //Creamos objeto para los resultados de la consulta de la api
+  const [resultado, setResultado] = useState({})
+
+  useEffect(() => {
+    if(Object.keys(monedas).length > 0){
+      //Llamando la Api para consultar la moneda a cotizar desde los datos que se ponen en el teclado
+      const cotizarCripto = async () => {
+        const { moneda, criptomoneda } = monedas
+        const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${criptomoneda}&tsyms=${moneda}`
+        
+        //Hacemos Fetch para traer los datos
+        const respuesta = await fetch(url)
+        const resultado = await respuesta.json()
+        //Cuando los datos de busqueda de la api son dinamicos, las variables que tenemos definidas se colocan en la llamada de la consulta de la API
+        //console.log(resultado.DISPLAY[criptomoneda][moneda]) //De esta forma busca por la variacion de los campos de la variable
+        setResultado(resultado.DISPLAY[criptomoneda][moneda])
+
+      }
+      cotizarCripto();
+    }
+  }, [monedas])
    
   // Creamos el componente de estilos
   // Es importnate el uso de los bactics, `` ya que estos son los que indican los estilos que va a utilizar el componente
@@ -50,16 +75,16 @@ function App() {
 
   return (
     <Contenedor>
-      <Imagen 
-      src={CriptoImagen}
-      alt='Imagen de las monedas' 
-      />
+      <Imagen src={CriptoImagen} alt='Imagen de las monedas' />
 
       <div>
         <Heading>Monedas de Cambio al Instante, <br></br> incluye Criptomonedas</Heading>
         
         {/* Se hace el llamado del componente Formulario */}
-        <Formulario />
+        <Formulario 
+          setMonedas={setMonedas}
+        
+        />
 
       </div>
 

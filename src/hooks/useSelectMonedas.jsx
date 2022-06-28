@@ -16,8 +16,6 @@ const Select = styled.select`
     padding:12px;
     border-radius: 11px;
     margin-bottom: 20px;
-
-
 `
 
 const useSelectMonedas = (label, opciones) => {
@@ -31,7 +29,7 @@ const useSelectMonedas = (label, opciones) => {
             <Select
             //Agregando los props al select
             value={state}
-            onChange={ e => setState( e.target.value)} //Leer el state
+            onChange={ e => setState( e.target.value )} //Leer el state
             
             >
                 <option values="">Seleccione</option>
