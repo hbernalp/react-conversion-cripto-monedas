@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import Formulario from './components/Formulario'
+import Resultado from './components/Resultado'
 import CriptoImagen from './img/imagen-criptos.png'
 
 
@@ -83,8 +84,10 @@ function App() {
         {/* Se hace el llamado del componente Formulario */}
         <Formulario 
           setMonedas={setMonedas}
-        
         />
+        
+        {/* mostrando los resultados cuando se ha dado click en el boton de cotizar */}
+        {resultado.PRICE && <Resultado resultado={resultado} />}
 
       </div>
 
